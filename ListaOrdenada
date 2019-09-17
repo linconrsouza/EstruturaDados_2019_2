@@ -1,0 +1,132 @@
+//
+// Created by a1242938 on 17/09/19.
+//
+
+#ifndef UNTITLED1_LISTAORDENADA_H
+#define UNTITLED1_LISTAORDENADA_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+
+typedef struct{
+    int key;
+}Item;
+
+typedef struct NodeList *Pointer;
+
+
+typedef struct NodeList{
+    Item element;
+    Pointer next;
+} NodeList;
+
+
+typedef struct {
+    Pointer first;
+    int size;
+} List;
+
+int tamanhoLista(List *list){
+    return (list->size);
+}
+
+void initList(List *list){
+    list->size=0;
+    list->first=NULL;
+
+}
+
+
+int estaVazia(List *list){
+    if(list->size == 0){
+        return 1;
+    }else{
+        return 0;
+    }
+
+}
+
+void insert(Item x,List *list){
+    Pointer aux;
+    aux=(Pointer)malloc(sizeof(NodeList));
+    aux->element = x;
+    if(list->size==0 || (x.key < list->first->element.key)){
+        aux->next = list->first;
+        list->first= aux;
+    } else{
+
+        Pointer aux2;
+        aux2=list->first;
+
+        while (aux2->next != NULL && x.key > aux2->element.key){
+            aux2 = aux2->next;
+        }
+        aux->next = aux2->next;
+        aux2->next = aux;
+    }
+    list->size++;
+}
+
+
+
+void imprimirLista(List *list){
+    Pointer aux;
+    for(aux=list->first; aux!=NULL;aux = aux->next){
+        printf("%d \n", aux->element.key);
+    }
+    printf("\n");
+}
+
+
+
+
+bool pesquisar(List *list, Item key){
+    Pointer aux = list->first;
+    if(estaVazia(list) == true){
+        return false;
+    }
+    while (aux != NULL && key.key > aux->element.key){
+        aux = aux->next;
+    }
+    if(aux == NULL || aux ->element.key > key.key){
+        return false;
+    }
+}
+
+
+
+bool Remover(List *list, int chave, Item *item){
+    if((estaVazia(list)) == 1 && chave < list->first->element.key){
+        return false;
+    }
+    if(chave == list->first->element.key){
+        Pointer aux = list->first;
+        list->first=list->first->next;
+        *item=aux->element;
+        free(aux);
+        list->size--;
+        return (true);
+    }
+}
+
+
+Item primeiro(List *list){
+    return list->first->element;
+}
+
+Item ultimo(List *list){
+    Pointer aux;
+    Item aux2;
+    aux2.key = 0;
+    for(aux = list->first; aux!=NULL; aux=aux->next){
+        if(aux!=NULL){
+            aux2 = aux->element;
+        }
+
+    }
+    return aux2;
+}
+
+#endif //UNTITLED1_LISTAORDENADA_H
