@@ -1,0 +1,135 @@
+#ifndef UNTITLED1_ARVORE_BIN_H
+#define UNTITLED1_ARVORE_BIN_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct{
+    int chave;
+} Objeto;
+
+typedef struct NoArvore *PtrArvore;
+
+typedef struct NoArvore {
+    Objeto elemento;
+    PtrArvore left;
+    PtrArvore right;
+} NoArvore;
+
+int numeroNosArvore(PtrArvore *node);
+int alturaArvore(PtrArvore *node);
+
+void iniciaArvore(PtrArvore *node){
+    *node = NULL;
+}
+
+bool estaVazia(PtrArvore *node){
+    return (*node == NULL);
+}
+
+
+
+
+
+bool insereItem(PtrArvore *node, Objeto x){
+    if(*node == NULL){
+        PtrArvore aux ;
+        aux = (PtrArvore) malloc(sizeof(NoArvore));
+        aux->elemento = x;
+        aux->right = (aux)->left = NULL;
+        (*node) = (aux);
+
+        return true;
+    }
+
+    if((*node)->elemento.chave == x.chave){
+        return false;
+    }
+
+    if((*node)->elemento.chave > x.chave){
+        return (insereItem(&(*node)->left, x));
+    }
+
+    if((*node)->elemento.chave < x.chave){
+
+        return (insereItem(&(*node)->right, x));
+    }
+
+}
+
+
+void pre_ordem(PtrArvore *arvore){
+
+    if(*arvore == NULL){
+        return;
+    }
+
+    printf("%d \n", ((*arvore)->elemento.chave));
+    pre_ordem(&(*arvore)->left);
+    pre_ordem(&(*arvore)->right);
+
+}
+
+
+
+
+void pos_ordem(PtrArvore *arvore){
+    if(*arvore == NULL){
+        return;
+    }
+    pos_ordem(&(*arvore)->left);
+    pos_ordem(&(*arvore)->right);
+    printf("%d \n", ((*arvore)->elemento.chave));
+}
+
+
+void em_ordem(PtrArvore *arvore){
+    if(*arvore == NULL){
+        return;
+    }
+    em_ordem(&(*arvore)->left);
+    printf("%d \n", ((*arvore)->elemento.chave));
+    em_ordem(&(*arvore)->right);
+}
+
+
+
+bool Procura(PtrArvore *arvore, int chave, Objeto *ret){
+    if(*arvore==NULL){
+        return false;
+    }
+    if((*arvore)->elemento.chave == chave){
+        return true;
+    }
+
+    if(chave < (*arvore)->elemento.chave){
+
+        return Procura(&(*arvore)->left, chave, ret);
+
+    } else { //chave> (*arvore)->elemento.chave
+
+        return Procura(&(*arvore)->right, chave, ret);
+
+    }
+}
+
+
+bool removeItem(PtrArvore *node, int key);
+void destroiArvore(PtrArvore *node);
+
+PtrArvore maximo(PtrArvore *node){
+    
+
+}
+PtrArvore maximoIterativo(PtrArvore *node);
+PtrArvore minimo(PtrArvore *node);
+PtrArvore minimoIterativo(PtrArvore *node);
+PtrArvore getMinAux(PtrArvore *node); //usado na remoção
+PtrArvore getMaxAux(PtrArvore *node); //usado na remoção
+
+
+
+
+
+#endif //UNTITLED1_ARVORE_BIN_H
